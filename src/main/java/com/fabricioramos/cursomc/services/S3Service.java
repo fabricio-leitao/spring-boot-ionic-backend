@@ -29,8 +29,7 @@ public class S3Service {
 	public URI uploadFile(MultipartFile multipartFile) {
 		try {
 			String fileName = multipartFile.getOriginalFilename();
-			InputStream is;
-			is = multipartFile.getInputStream();
+			InputStream is = multipartFile.getInputStream();
 			String contentType = multipartFile.getContentType();
 			return uploadFile(is, fileName, contentType);
 		} catch (IOException e) {
@@ -42,6 +41,7 @@ public class S3Service {
 	public URI uploadFile(InputStream is, String fileName, String contentType) {
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
+			meta.setContentType(contentType);
 			LOG.info("Iniciando upload");
 			s3client.putObject(bucketName, fileName, is, meta);
 			LOG.info("Upload finalizado");
